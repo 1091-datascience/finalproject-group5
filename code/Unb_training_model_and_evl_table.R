@@ -52,5 +52,7 @@ names(cgbm) <- c("accuracy","sensitivity","specificity","precision","recall","F1
 write.csv(cgbm,file=args$output_csv)
 roc.gbm <- rocit(pred_gbm, test$fraudulent)
 summary(roc.gbm)
+png(filename=paste("gbm_unb",".png",sep=""))
 plot(roc.gbm, YIndex = F, values = F)
+dev.off()
 
