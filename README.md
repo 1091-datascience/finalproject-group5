@@ -37,6 +37,7 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 * Which method do you use?
 * What is a null model for comparison?
 * How do your perform evaluation? ie. Cross-validation, or extra separated data
+P.S. 我們訓練好的模型weight我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1WpWAUbflBEZDdUu03k2wPS2FTHHsYLf7?usp=sharing)
 
 ### results
 
