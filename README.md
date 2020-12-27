@@ -24,7 +24,26 @@ Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ../data/fake_job_p
 --output_csv ../model_results/unb/cnf_gbm_unb.csv --model_weight ../model_results/unb/gbm_ub.rds
 ```
 
+訓練Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
+```R
+Rscript ./code/****.R --input ../data/fake_job_postings_TFIDF_balance.csv 
+```
+註1:****.R 可以替換成在code資料夾底下的模型名稱(e.g. decision_tree.R)
+註2:還有其他的arg_parser 分別代表
+--training_rds 存放訓練Training data後的模型參數位置
+--training_and_val_rd 存放訓練Training data + Validation data後的模型參數位置
+--val_eval_table 存放訓練Training data後的模型評估指標csv檔
+--testing_eval_table 存放訓練Training data + Validation data後的模型評估指標csv檔
+--val_ROC 存放訓練Training data後的模型ROC的png檔
+--testing_ROC 存放訓練Training data + Validation data後的模型ROC的png檔
+--training_cv_rds (這是Ridge/Lasso才有)
+--training_and_val_cv_rds (這是Ridge/Lasso才有)
+--val_eval_table (這是Ridge/Lasso才有)
+--testing_eval_table (這是Ridge/Lasso才有)
 
+以上arg_parser你可以直接使用內建的預設值
+
+P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1WpWAUbflBEZDdUu03k2wPS2FTHHsYLf7?usp=sharing)
 * any on-line visualization
 
 ## Folder organization and its related information
@@ -55,7 +74,6 @@ Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ../data/fake_job_p
 * Which method do you use? *Decision_Tree ridge lasso gbm xgboost
 * What is a null model for comparison? *Unbalanced model using in balanced data
 * How do your perform evaluation? ie. Cross-validation, or extra separated data
-P.S. 我們訓練好的模型weight我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1WpWAUbflBEZDdUu03k2wPS2FTHHsYLf7?usp=sharing)
 
 ### results
 
