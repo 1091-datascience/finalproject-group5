@@ -9,6 +9,8 @@
 ### Goal
 A breif introduction about your project, i.e., what is your goal?
 
+This dataset contains 18K job descriptions out of which about 800 are fake. The data consists of both textual information and meta-information about the jobs. The dataset can be used to create classification models which can learn the job descriptions which are fraudulent.
+
 ### Demo 
 You should provide an example commend to reproduce your result
 ```R
@@ -26,7 +28,7 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 
 ### data
 
-* Source
+* Source: kaggle
 * Input format
 * Any preprocessing?
   * Handle missing data
