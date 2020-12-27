@@ -28,7 +28,8 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 
 ### data
 
-* Source: kaggle
+* Kaggle 公開資料 Link: https://www.kaggle.com/shivamb/real-or-fake-fake-jobposting-prediction
+
 * Input format
 * Any preprocessing?
   * 將文字型資料合併成一欄在使用TF-IDF技術挑選文本中比較重要的文字
