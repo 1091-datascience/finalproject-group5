@@ -27,10 +27,11 @@ Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ../data/fake_job_p
 訓練Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
 ```R
 Rscript ./code/****.R --input ../data/fake_job_postings_TFIDF_balance.csv 
-```
-```
+
 註1:****.R 可以替換成在code資料夾底下的模型名稱(e.g. decision_tree.R)
+
 註2:還有其他的arg_parser 分別代表
+
 --training_rds 存放訓練Training data後的模型參數位置
 --training_and_val_rd 存放訓練Training data + Validation data後的模型參數位置
 --val_eval_table 存放訓練Training data後的模型評估指標csv檔
