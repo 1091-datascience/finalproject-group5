@@ -1,4 +1,4 @@
-# [Group5] Title of your final project
+# [Group5] [Real or Fake] Fake JobPosting Prediction
 
 ### Groups
 * 朱家宏, 106305036
