@@ -29,9 +29,12 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 ### data
 
 * Kaggle 公開資料 Link: https://www.kaggle.com/shivamb/real-or-fake-fake-jobposting-prediction
-![Kaggle公開資料](/Images/EMSCAD資料集.png)
+* 原始資料來自希臘愛琴大學 資安實驗室的EMSCAD資料集
+* ![Kaggle公開資料](/Images/EMSCAD資料集.png)
 
 * Input format
+* 根據官方原始文件
+* ![Input_format](/Images/Input_format.png)
 * Any preprocessing?
   * 將文字型資料合併成一欄在使用TF-IDF技術挑選文本中比較重要的文字
   * Handle missing data   *將Salary 資料刪除(因為太多missing value) 將title刪除，因為desciption欄位會描述
