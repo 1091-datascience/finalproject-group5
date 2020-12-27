@@ -29,6 +29,7 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 ### data
 
 * Kaggle 公開資料 Link: https://www.kaggle.com/shivamb/real-or-fake-fake-jobposting-prediction
+![Kaggle公開資料](/Images/EMSCAD資料集.png)
 
 * Input format
 * Any preprocessing?
