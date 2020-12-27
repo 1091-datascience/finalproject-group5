@@ -31,13 +31,15 @@ Rscript code/your_script.R --input data/training --output results/performance.ts
 * Source: kaggle
 * Input format
 * Any preprocessing?
-  * Handle missing data
-  * Scale value
-
+  * 將文字型資料合併成一欄在使用TF-IDF技術挑選文本中比較重要的文字
+  * Handle missing data   *將Salary 資料刪除(因為太多missing value) 將title刪除，因為desciption欄位會描述
+  * Scale value           *將類別型的資料轉成one-hot-encoding形式
+  * Unbalanced data preprocessing 要補
+  
 ### code
 
-* Which method do you use?
-* What is a null model for comparison?
+* Which method do you use? *Decision_Tree ridge lasso gbm xgboost
+* What is a null model for comparison? *Unbalanced model using in balanced data
 * How do your perform evaluation? ie. Cross-validation, or extra separated data
 P.S. 我們訓練好的模型weight我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1WpWAUbflBEZDdUu03k2wPS2FTHHsYLf7?usp=sharing)
 
