@@ -1,10 +1,10 @@
 # [Group5] Title of your final project
 
 ### Groups
-* name, student ID1
-* name, student ID2
-* name, student ID3
-* ...
+* 朱家宏, 106305036
+* 林宗霖, 109753125
+* 林瀚陞, 107751005
+* 黃瑜萍
 
 ### Goal
 A breif introduction about your project, i.e., what is your goal?
