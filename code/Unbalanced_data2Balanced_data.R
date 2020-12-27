@@ -16,5 +16,3 @@ balancedData_x<-data_osp$X
 fraudulent <- data_osp$Y
 balanceData <- cbind(balancedData_x,fraudulent)
 write.csv(balanceData,file=args$output_csv)
-
-# Rscript Unbalanced_data2Balanced_data.R --input ./data/fake_job_postings_TFIDF.csv --output ./data/fake_job_postings_TFIDF_balance.csv
