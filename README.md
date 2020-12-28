@@ -18,7 +18,7 @@ Rscript ./code/Unbalanced_data2Balanced_data --input_csv ../data/fake_job_postin
 --output_csv ../data/fake_job_postings_TFIDF_balance.csv
 ```
 
-訓練GBM模型在Unbalanced data並評估模型好壞。這個R檔有將資料轉成Balanced data? 
+訓練GBM模型在Unbalanced data並評估模型好壞
 ```R
 Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ../data/fake_job_postings.csv 
 --output_csv ../model_results/unb/cnf_gbm_unb.csv --model_weight ../model_results/unb/gbm_ub.rds
