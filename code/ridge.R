@@ -7,7 +7,7 @@ library(partykit)               # Convert rpart object to BinaryTree
 library(ROCit)
 library(argparser)
 
-main_dir <- '../model_results'
+main_dir <- './model_results'
 sub_dir <- 'ridge'
 output_dir <- file.path(main_dir, sub_dir)
 
@@ -18,17 +18,17 @@ if (!dir.exists(output_dir)){
 }
 
 p <- arg_parser("Process unbalanced data csv to balanced data csv")#
-p <- add_argument(p, "--input", help="balanced data csv file",default = "../data/fake_job_postings_TFIDF_balance.csv" )
-p <- add_argument(p, "--training_rds", help="only training",default = "../model_results/ridge/ridge_train" )
-p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "../model_results/ridge/ridge_train_cv")
-p <- add_argument(p, "--training_cv_rds", help="only training",default = "../model_results/ridge/ridge_tv" )
-p <- add_argument(p, "--training_and_val_cv_rds", help="training and valuation",default = "../model_results/ridge/ridge_tv_cv")
-p <- add_argument(p, "--val_eval_table", help="only training",default = "../model_results/ridge/cnf_ridge_train.csv" )
-p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "../model_results/ridge/cnf_ridge_tv.csv")
-p <- add_argument(p, "--val_ROC", help="only training",default = "../model_results/ridge/ridge_train" )
-p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "../model_results/ridge/ridge_tv")
+p <- add_argument(p, "--input", help="balanced data csv file",default = "./data/fake_job_postings_TFIDF_balance.csv" )
+p <- add_argument(p, "--training_rds", help="only training",default = "./model_results/ridge/ridge_train" )
+p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "./model_results/ridge/ridge_train_cv")
+p <- add_argument(p, "--training_cv_rds", help="only training",default = "./model_results/ridge/ridge_tv" )
+p <- add_argument(p, "--training_and_val_cv_rds", help="training and valuation",default = "./model_results/ridge/ridge_tv_cv")
+p <- add_argument(p, "--val_eval_table", help="only training",default = "./model_results/ridge/cnf_ridge_train.csv" )
+p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/ridge/cnf_ridge_tv.csv")
+p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/ridge/ridge_train" )
+p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/ridge/ridge_tv")
 
-# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
+# trailingOnly 如�?�是TRUE??�話，�?�只編輯command-line?��?��args??�值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
@@ -63,7 +63,7 @@ for(i in 1:10){
 }
 
 #ridge
-
+library(glmnet)
 for(i in 1:10){
   num_ridge_train=glmnet(x = data.matrix(trainData[[i]][, -length(trainData[[i]])]), 
                          y = trainData[[i]]$fraudulent, 
@@ -117,6 +117,8 @@ cridge_train_final <- data.frame()
 cridge_tv_final <- data.frame()
 roc.ridge_train <- list()
 roc.ridge_tv <- list()
+auc.ridge_train <- list()
+auc.ridge_tv <- list()
 for(i in 1:10){
   num_ridge_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_ridge_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
@@ -150,20 +152,44 @@ for(i in 1:10){
   f1.ridge_tv[[i]] <- confusematrix_ridge_tv[[i]]$byClass[[7]]
   balacc.ridge_train[[i]] <- confusematrix_ridge_train[[i]]$byClass[[11]]
   balacc.ridge_tv[[i]] <- confusematrix_ridge_tv[[i]]$byClass[[11]]
-  fold_ridge[[i]] <- paste0("fold",i)
-  cridge_train[[i]] <- data.frame(fold_ridge[[i]],round(acc.ridge_train[[i]],2),round(sens.ridge_train[[i]],2),round(spec.ridge_train[[i]],2),
-                                  round(prec.ridge_train[[i]],2),round(rec.ridge_train[[i]],2),round(f1.ridge_train[[i]],2),
-                                  round(balacc.ridge_train[[i]],2))
-  names(cridge_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  cridge_train_final <- rbind(cridge_train_final,cridge_train[[i]])
-  cridge_tv[[i]] <- data.frame(fold_ridge[[i]],round(acc.ridge_train[[i]],2),round(sens.ridge_tv[[i]],2),round(spec.ridge_tv[[i]],2),
-                               round(prec.ridge_tv[[i]],2),round(rec.ridge_tv[[i]],2),round(f1.ridge_tv[[i]],2),
-                               round(balacc.ridge_tv[[i]],2))
-  names(cridge_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  cridge_tv_final <- rbind(cridge_tv_final,cridge_tv[[i]])
   roc.ridge_train[[i]] <- rocit(as.numeric(pred_ridge_train[[i]]), validData[[i]]$fraudulent)
   roc.ridge_tv[[i]] <- rocit(as.numeric(pred_ridge_tv[[i]]), testData[[i]]$fraudulent)
+  auc.ridge_train[[i]] <- as.numeric(ciAUC(roc.ridge_train[[i]])[1])
+  auc.ridge_tv[[i]] <- as.numeric(ciAUC(roc.ridge_tv[[i]])[1])
+  fold_ridge[[i]] <- paste0("fold",i)
+  cridge_train[[i]] <- data.frame(fold_ridge[[i]],round(acc.ridge_train[[i]],4),round(sens.ridge_train[[i]],4),round(spec.ridge_train[[i]],4),
+                                  round(prec.ridge_train[[i]],4),round(rec.ridge_train[[i]],4),round(f1.ridge_train[[i]],4),
+                                  round(balacc.ridge_train[[i]],4),round(auc.ridge_train[[i]],4))
+  names(cridge_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  cridge_train_final <- rbind(cridge_train_final,cridge_train[[i]])
+  cridge_tv[[i]] <- data.frame(fold_ridge[[i]],round(acc.ridge_train[[i]],4),round(sens.ridge_tv[[i]],4),round(spec.ridge_tv[[i]],4),
+                               round(prec.ridge_tv[[i]],4),round(rec.ridge_tv[[i]],4),round(f1.ridge_tv[[i]],4),
+                               round(balacc.ridge_tv[[i]],4),round(auc.ridge_tv[[i]],4))
+  names(cridge_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  cridge_tv_final <- rbind(cridge_tv_final,cridge_tv[[i]])
+  
+} 
+l <- list()
+h <- list()
+for(s in 2:length(cridge_train_final)){
+  l[[s]] <- mean(cridge_train_final[[s]])
 }
+k <- data.frame(t(c("ave.",round(l[[2]],2),
+                    round(l[[3]],2),round(l[[4]],2),round(l[[5]],2)
+                    ,round(l[[6]],2),round(l[[7]],2),round(l[[8]],2)
+                    ,round(l[[9]],2))))
+names(k) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+cridge_train_final <- rbind(cridge_train_final,k)
+for(s in 2:length(cridge_tv_final)){
+  h[[s]] <- mean(cridge_tv_final[[s]])
+}
+q <- data.frame(t(c("ave.",round(h[[2]],2),
+                    round(h[[3]],2),round(h[[4]],2),round(h[[5]],2)
+                    ,round(h[[6]],2),round(h[[7]],2),round(h[[8]],2)
+                    ,round(h[[9]],2))))
+names(q) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+cridge_tv_final <- rbind(cridge_tv_final,k)
+
 write.csv(cridge_train_final,file=args$val_eval_table)
 write.csv(cridge_tv_final,file=args$testing_eval_table)
 for (i in 1:10){

@@ -7,7 +7,7 @@ library(partykit)               # Convert rpart object to BinaryTree
 library(ROCit)
 library(argparser)
 
-main_dir <- '../model_results'
+main_dir <- './model_results'
 sub_dir <- 'decision_tree'
 output_dir <- file.path(main_dir, sub_dir)
 
@@ -17,15 +17,15 @@ if (!dir.exists(output_dir)){
   print("Decision tree Dir already exists!")
 }
 p <- arg_parser("Process unbalanced data csv to balanced data csv")#
-p <- add_argument(p, "--input", help="balanced data csv file",default = "../data/fake_job_postings_TFIDF_balance.csv" )
-p <- add_argument(p, "--training_rds", help="only training",default = "../model_results/decision_tree/dtree_train" )
-p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "../model_results/decision_tree/dtree_tv")
-p <- add_argument(p, "--val_eval_table", help="only training",default = "../model_results/decision_tree/cnf_dtree_train.csv" )
-p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "../model_results/decision_tree/cnf_dtree_tv.csv")
-p <- add_argument(p, "--val_ROC", help="only training",default = "../model_results/decision_tree/dtree_train" )
-p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "../model_results/decision_tree/dtree_tv")
+p <- add_argument(p, "--input", help="balanced data csv file",default = "./data/fake_job_postings_TFIDF_balance.csv" )
+p <- add_argument(p, "--training_rds", help="only training",default = "./model_results/decision_tree/dtree_train" )
+p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "./model_results/decision_tree/dtree_tv")
+p <- add_argument(p, "--val_eval_table", help="only training",default = "./model_results/decision_tree/cnf_dtree_train.csv" )
+p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/decision_tree/cnf_dtree_tv.csv")
+p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/decision_tree/dtree_train" )
+p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/decision_tree/dtree_tv")
 
-# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
+# trailingOnly 如�?�是TRUE??�話，�?�只編輯command-line?��?��args??�值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
@@ -65,10 +65,10 @@ library(rpart)
 #train
 for(i in 1:10){
   num_tree_train = rpart(fraudulent ~ ., 
-                         data = trainData, method="class", minbucket=5,
+                         data = trainData[[i]], method="class", minbucket=5,
                          parms = list(split="information"))
   num_tree_tv = rpart(fraudulent ~ ., 
-                      data = tvData, method="class", minbucket=5,
+                      data = tvData[[i]], method="class", minbucket=5,
                       parms = list(split="information"))
   saveRDS(num_tree_train,file=paste(args$training_rds,i,".rds",sep=""))
   saveRDS(num_tree_tv,file=paste(args$training_and_val_rds,i,".rds",sep=""))
@@ -106,6 +106,8 @@ roc.tree_train <- list()
 roc.tree_tv <- list()
 plt_roc_tree_train <- list()
 plt_roc_tree_tv <- list()
+auc.tree_train <- list()
+auc.tree_tv <- list()
 for(i in 1:10){
   num_tree_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_tree_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
@@ -133,20 +135,43 @@ for(i in 1:10){
   f1.tree_tv[[i]] <- confusematrix_tree_tv[[i]]$byClass[[7]]
   balacc.tree_train[[i]] <- confusematrix_tree_train[[i]]$byClass[[11]]
   balacc.tree_tv[[i]] <- confusematrix_tree_tv[[i]]$byClass[[11]]
-  fold_tree[[i]] <- paste0("fold",i)
-  ctree_train[[i]] <- data.frame(fold_tree[[i]],round(acc.tree_train[[i]],2),round(sens.tree_train[[i]],2),round(spec.tree_train[[i]],2),
-                                 round(prec.tree_train[[i]],2),round(rec.tree_train[[i]],2),round(f1.tree_train[[i]],2),
-                                 round(balacc.tree_train[[i]],2))
-  names(ctree_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  ctree_train_final <- rbind(ctree_train_final,ctree_train[[i]])
-  ctree_tv[[i]] <- data.frame(fold_tree[[i]],round(acc.tree_train[[i]],2),round(sens.tree_tv[[i]],2),round(spec.tree_tv[[i]],2),
-                              round(prec.tree_tv[[i]],2),round(rec.tree_tv[[i]],2),round(f1.tree_tv[[i]],2),
-                              round(balacc.tree_tv[[i]],2))
-  names(ctree_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  ctree_tv_final <- rbind(ctree_tv_final,ctree_tv[[i]])
   roc.tree_train[[i]] <- rocit(pred_tree_train[[i]][,1], validData[[i]]$fraudulent)
   roc.tree_tv[[i]] <- rocit(pred_tree_tv[[i]][,1], testData[[i]]$fraudulent)
+  auc.tree_train[[i]] <- as.numeric(ciAUC(roc.tree_train[[i]])[1])
+  auc.tree_tv[[i]] <- as.numeric(ciAUC(roc.tree_tv[[i]])[1])
+  fold_tree[[i]] <- paste0("fold",i)
+  ctree_train[[i]] <- data.frame(fold_tree[[i]],round(acc.tree_train[[i]],4),round(sens.tree_train[[i]],4),round(spec.tree_train[[i]],4),
+                                 round(prec.tree_train[[i]],4),round(rec.tree_train[[i]],4),round(f1.tree_train[[i]],4),
+                                 round(balacc.tree_train[[i]],4),round(auc.tree_train[[i]],4))
+  names(ctree_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  ctree_train_final <- rbind(ctree_train_final,ctree_train[[i]])
+  ctree_tv[[i]] <- data.frame(fold_tree[[i]],round(acc.tree_train[[i]],4),round(sens.tree_tv[[i]],4),round(spec.tree_tv[[i]],4),
+                              round(prec.tree_tv[[i]],4),round(rec.tree_tv[[i]],4),round(f1.tree_tv[[i]],4),
+                              round(balacc.tree_tv[[i]],4),round(auc.tree_tv[[i]],4))
+  names(ctree_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  ctree_tv_final <- rbind(ctree_tv_final,ctree_tv[[i]])
+  
 } 
+l <- list()
+h <- list()
+for(s in 2:length(ctree_train_final)){
+  l[[s]] <- mean(ctree_train_final[[s]])
+}
+k <- data.frame(t(c("ave.",round(l[[2]],2),
+                    round(l[[3]],2),round(l[[4]],2),round(l[[5]],2)
+                    ,round(l[[6]],2),round(l[[7]],2),round(l[[8]],2)
+                    ,round(l[[9]],2))))
+names(k) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+ctree_train_final <- rbind(ctree_train_final,k)
+for(s in 2:length(ctree_tv_final)){
+  h[[s]] <- mean(ctree_tv_final[[s]])
+}
+q <- data.frame(t(c("ave.",round(h[[2]],2),
+                    round(h[[3]],2),round(h[[4]],2),round(h[[5]],2)
+                    ,round(h[[6]],2),round(h[[7]],2),round(h[[8]],2)
+                    ,round(h[[9]],2))))
+names(q) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+ctree_tv_final <- rbind(ctree_tv_final,k)
 write.csv(ctree_train_final,file=args$val_eval_table)
 write.csv(ctree_tv_final,file=args$testing_eval_table)
 for (i in 1:10){

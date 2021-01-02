@@ -7,7 +7,7 @@ library(partykit)               # Convert rpart object to BinaryTree
 library(ROCit)
 library(argparser)
 
-main_dir <- '../model_results'
+main_dir <- './model_results'
 sub_dir <- 'xgb'
 output_dir <- file.path(main_dir, sub_dir)
 
@@ -18,15 +18,15 @@ if (!dir.exists(output_dir)){
 }
 
 p <- arg_parser("Process unbalanced data csv to balanced data csv")#
-p <- add_argument(p, "--input", help="balanced data csv file",default = "../data/fake_job_postings_TFIDF_balance.csv" )
-p <- add_argument(p, "--training_rds", help="only training",default = "../model_results/xgb/xgb_train" )
-p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "..//model_results/xgb/xgb_tv")
-p <- add_argument(p, "--val_eval_table", help="only training",default = "../model_results/xgb/cnf_xgb_train.csv" )
-p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "../model_results/xgb/cnf_xgb_tv.csv")
-p <- add_argument(p, "--val_ROC", help="only training",default = "../model_results/xgb/xgb_train" )
-p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "../model_results/xgb/xgb_tv")
+p <- add_argument(p, "--input", help="balanced data csv file",default = "./data/fake_job_postings_TFIDF_balance.csv" )
+p <- add_argument(p, "--training_rds", help="only training",default = "./model_results/xgb/xgb_train" )
+p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = ".//model_results/xgb/xgb_tv")
+p <- add_argument(p, "--val_eval_table", help="only training",default = "./model_results/xgb/cnf_xgb_train.csv" )
+p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/xgb/cnf_xgb_tv.csv")
+p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/xgb/xgb_train" )
+p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/xgb/xgb_tv")
 
-# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
+# trailingOnly 如�?�是TRUE??�話，�?�只編輯command-line?��?��args??�值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
@@ -115,7 +115,8 @@ cxgb_train_final <- data.frame()
 cxgb_tv_final <- data.frame()
 roc.xgb_train <- list()
 roc.xgb_tv <- list()
-
+auc.xgb_train <- list()
+auc.xgb_tv <- list()
 for(i in 1:10){
   num_xgb_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_xgb_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
@@ -143,20 +144,44 @@ for(i in 1:10){
   f1.xgb_tv[[i]] <- confusematrix_xgb_tv[[i]]$byClass[[7]]
   balacc.xgb_train[[i]] <- confusematrix_xgb_train[[i]]$byClass[[11]]
   balacc.xgb_tv[[i]] <- confusematrix_xgb_tv[[i]]$byClass[[11]]
-  fold_xgb[[i]] <- paste0("fold",i)
-  cxgb_train[[i]] <- data.frame(fold_xgb[[i]],round(acc.xgb_train[[i]],2),round(sens.xgb_train[[i]],2),round(spec.xgb_train[[i]],2),
-                                round(prec.xgb_train[[i]],2),round(rec.xgb_train[[i]],2),round(f1.xgb_train[[i]],2),
-                                round(balacc.xgb_train[[i]],2))
-  names(cxgb_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  cxgb_train_final <- rbind(cxgb_train_final,cxgb_train[[i]])
-  cxgb_tv[[i]] <- data.frame(fold_xgb[[i]],round(acc.xgb_train[[i]],2),round(sens.xgb_tv[[i]],2),round(spec.xgb_tv[[i]],2),
-                             round(prec.xgb_tv[[i]],2),round(rec.xgb_tv[[i]],2),round(f1.xgb_tv[[i]],2),
-                             round(balacc.xgb_tv[[i]],2))
-  names(cxgb_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  cxgb_tv_final <- rbind(cxgb_tv_final,cxgb_tv[[i]])
   roc.xgb_train[[i]] <- rocit(pred_xgb_train[[i]], validData[[i]]$fraudulent)
   roc.xgb_tv[[i]] <- rocit(pred_xgb_tv[[i]], testData[[i]]$fraudulent)
+  auc.xgb_train[[i]] <- as.numeric(ciAUC(roc.xgb_train[[i]])[1])
+  auc.xgb_tv[[i]] <- as.numeric(ciAUC(roc.xgb_tv[[i]])[1])
+  fold_xgb[[i]] <- paste0("fold",i)
+  cxgb_train[[i]] <- data.frame(fold_xgb[[i]],round(acc.xgb_train[[i]],4),round(sens.xgb_train[[i]],4),round(spec.xgb_train[[i]],4),
+                                  round(prec.xgb_train[[i]],4),round(rec.xgb_train[[i]],4),round(f1.xgb_train[[i]],4),
+                                  round(balacc.xgb_train[[i]],4),round(auc.xgb_train[[i]],4))
+  names(cxgb_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  cxgb_train_final <- rbind(cxgb_train_final,cxgb_train[[i]])
+  cxgb_tv[[i]] <- data.frame(fold_xgb[[i]],round(acc.xgb_train[[i]],4),round(sens.xgb_tv[[i]],4),round(spec.xgb_tv[[i]],4),
+                               round(prec.xgb_tv[[i]],4),round(rec.xgb_tv[[i]],4),round(f1.xgb_tv[[i]],4),
+                               round(balacc.xgb_tv[[i]],4),round(auc.xgb_tv[[i]],4))
+  names(cxgb_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  cxgb_tv_final <- rbind(cxgb_tv_final,cxgb_tv[[i]])
+  
+} 
+l <- list()
+h <- list()
+for(s in 2:length(cxgb_train_final)){
+  l[[s]] <- mean(cxgb_train_final[[s]])
 }
+k <- data.frame(t(c("ave.",round(l[[2]],2),
+                    round(l[[3]],2),round(l[[4]],2),round(l[[5]],2)
+                    ,round(l[[6]],2),round(l[[7]],2),round(l[[8]],2)
+                    ,round(l[[9]],2))))
+names(k) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+cxgb_train_final <- rbind(cxgb_train_final,k)
+for(s in 2:length(cxgb_tv_final)){
+  h[[s]] <- mean(cxgb_tv_final[[s]])
+}
+q <- data.frame(t(c("ave.",round(h[[2]],2),
+                    round(h[[3]],2),round(h[[4]],2),round(h[[5]],2)
+                    ,round(h[[6]],2),round(h[[7]],2),round(h[[8]],2)
+                    ,round(h[[9]],2))))
+names(q) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+cxgb_tv_final <- rbind(cxgb_tv_final,k)
+
 write.csv(cxgb_train_final,file=args$val_eval_table)
 write.csv(cxgb_tv_final,file=args$testing_eval_table)
 for (i in 1:10){

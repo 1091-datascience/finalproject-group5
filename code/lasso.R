@@ -7,7 +7,7 @@ library(partykit)               # Convert rpart object to BinaryTree
 library(ROCit)
 library(argparser)
 
-main_dir <- '../model_results'
+main_dir <- './model_results'
 sub_dir <- 'lasso'
 output_dir <- file.path(main_dir, sub_dir)
 
@@ -18,17 +18,17 @@ if (!dir.exists(output_dir)){
 }
 
 p <- arg_parser("Process unbalanced data csv to balanced data csv")#
-p <- add_argument(p, "--input", help="balanced data csv file",default = "../data/fake_job_postings_TFIDF_balance.csv" )
-p <- add_argument(p, "--training_rds", help="only training",default = "../model_results/lasso/lasso_train" )
-p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "../model_results/lasso/lasso_tv")
-p <- add_argument(p, "--training_cv_rds", help="only training",default = "../model_results/lasso/lasso_train_cv" )
-p <- add_argument(p, "--training_and_val_cv_rds", help="training and valuation",default = "../model_results/lasso/lasso_tv_cv")
-p <- add_argument(p, "--val_eval_table", help="only training",default = "../model_results/lasso/cnf_lasso__train.csv" )
-p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "../model_results/lasso/cnf_lasso_tv.csv")
-p <- add_argument(p, "--val_ROC", help="only training",default = "../model_results/lasso/lasso_train" )
-p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "../model_results/lasso/lasso_tv")
+p <- add_argument(p, "--input", help="balanced data csv file",default = "./data/fake_job_postings_TFIDF_balance.csv" )
+p <- add_argument(p, "--training_rds", help="only training",default = "./model_results/lasso/lasso_train" )
+p <- add_argument(p, "--training_and_val_rds", help="training and valuation",default = "./model_results/lasso/lasso_tv")
+p <- add_argument(p, "--training_cv_rds", help="only training",default = "./model_results/lasso/lasso_train_cv" )
+p <- add_argument(p, "--training_and_val_cv_rds", help="training and valuation",default = "./model_results/lasso/lasso_tv_cv")
+p <- add_argument(p, "--val_eval_table", help="only training",default = "./model_results/lasso/cnf_lasso__train.csv" )
+p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/lasso/cnf_lasso_tv.csv")
+p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/lasso/lasso_train" )
+p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/lasso/lasso_tv")
 
-# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
+# trailingOnly 如�?�是TRUE??�話，�?�只編輯command-line?��?��args??�值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
@@ -65,6 +65,7 @@ for(i in 1:10){
 #lasso
 
 library(glmnet)
+
 for(i in 1:10){
   num_lasso_train=glmnet(x = data.matrix(trainData[[i]][, -length(trainData[[i]])]), 
                          y = trainData[[i]]$fraudulent, 
@@ -118,6 +119,8 @@ classo_train_final <- data.frame()
 classo_tv_final <- data.frame()
 roc.lasso_train <- list()
 roc.lasso_tv <- list()
+auc.lasso_train <- list()
+auc.lasso_tv <- list()
 for(i in 1:10){
   num_lasso_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_lasso_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
@@ -151,20 +154,43 @@ for(i in 1:10){
   f1.lasso_tv[[i]] <- confusematrix_lasso_tv[[i]]$byClass[[7]]
   balacc.lasso_train[[i]] <- confusematrix_lasso_train[[i]]$byClass[[11]]
   balacc.lasso_tv[[i]] <- confusematrix_lasso_tv[[i]]$byClass[[11]]
-  fold_lasso[[i]] <- paste0("fold",i)
-  classo_train[[i]] <- data.frame(fold_lasso[[i]],round(acc.lasso_train[[i]],2),round(sens.lasso_train[[i]],2),round(spec.lasso_train[[i]],2),
-                                  round(prec.lasso_train[[i]],2),round(rec.lasso_train[[i]],2),round(f1.lasso_train[[i]],2),
-                                  round(balacc.lasso_train[[i]],2))
-  names(classo_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  classo_train_final <- rbind(classo_train_final,classo_train[[i]])
-  classo_tv[[i]] <- data.frame(fold_lasso[[i]],round(acc.lasso_train[[i]],2),round(sens.lasso_tv[[i]],2),round(spec.lasso_tv[[i]],2),
-                               round(prec.lasso_tv[[i]],2),round(rec.lasso_tv[[i]],2),round(f1.lasso_tv[[i]],2),
-                               round(balacc.lasso_tv[[i]],2))
-  names(classo_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy")
-  classo_tv_final <- rbind(classo_tv_final,classo_tv[[i]])
   roc.lasso_train[[i]] <- rocit(as.numeric(pred_lasso_train[[i]]), validData[[i]]$fraudulent)
   roc.lasso_tv[[i]] <- rocit(as.numeric(pred_lasso_tv[[i]]), testData[[i]]$fraudulent)
+  auc.lasso_train[[i]] <- as.numeric(ciAUC(roc.lasso_train[[i]])[1])
+  auc.lasso_tv[[i]] <- as.numeric(ciAUC(roc.lasso_tv[[i]])[1])
+  fold_lasso[[i]] <- paste0("fold",i)
+  classo_train[[i]] <- data.frame(fold_lasso[[i]],round(acc.lasso_train[[i]],4),round(sens.lasso_train[[i]],4),round(spec.lasso_train[[i]],4),
+                                round(prec.lasso_train[[i]],4),round(rec.lasso_train[[i]],4),round(f1.lasso_train[[i]],4),
+                                round(balacc.lasso_train[[i]],4),round(auc.lasso_train[[i]],4))
+  names(classo_train[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  classo_train_final <- rbind(classo_train_final,classo_train[[i]])
+  classo_tv[[i]] <- data.frame(fold_lasso[[i]],round(acc.lasso_train[[i]],4),round(sens.lasso_tv[[i]],4),round(spec.lasso_tv[[i]],4),
+                             round(prec.lasso_tv[[i]],4),round(rec.lasso_tv[[i]],4),round(f1.lasso_tv[[i]],4),
+                             round(balacc.lasso_tv[[i]],4),round(auc.lasso_tv[[i]],4))
+  names(classo_tv[[i]]) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+  classo_tv_final <- rbind(classo_tv_final,classo_tv[[i]])
+  
+} 
+l <- list()
+h <- list()
+for(s in 2:length(classo_train_final)){
+  l[[s]] <- mean(classo_train_final[[s]])
 }
+k <- data.frame(t(c("ave.",round(l[[2]],2),
+                    round(l[[3]],2),round(l[[4]],2),round(l[[5]],2)
+                    ,round(l[[6]],2),round(l[[7]],2),round(l[[8]],2)
+                    ,round(l[[9]],2))))
+names(k) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+classo_train_final <- rbind(classo_train_final,k)
+for(s in 2:length(classo_tv_final)){
+  h[[s]] <- mean(classo_tv_final[[s]])
+}
+q <- data.frame(t(c("ave.",round(h[[2]],2),
+                    round(h[[3]],2),round(h[[4]],2),round(h[[5]],2)
+                    ,round(h[[6]],2),round(h[[7]],2),round(h[[8]],2)
+                    ,round(h[[9]],2))))
+names(q) <- c("set","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc")
+classo_tv_final <- rbind(classo_tv_final,k)
 
 write.csv(classo_train_final,file=args$val_eval_table)
 write.csv(classo_tv_final,file=args$testing_eval_table)
