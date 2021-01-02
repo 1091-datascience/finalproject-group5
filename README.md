@@ -71,7 +71,7 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
   * 將文字型資料合併成一欄在使用TF-IDF技術挑選文本中比較重要的文字
   * Handle missing data   *將Salary 資料刪除(因為太多missing value) 將title刪除，因為desciption欄位會描述
   * Scale value           *將類別型的資料轉成one-hot-encoding形式
-  * Unbalanced data preprocessing 要補
+  * Unbalanced data preprocessing *在label數量極為不平均大約為10:1 利用Synthetic Minority Oversampling Technique(SMOTE)方法合成少數類
   
 ### code
 
