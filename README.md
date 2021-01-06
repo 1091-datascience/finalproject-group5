@@ -80,8 +80,8 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
   * Scale value 
     1. 將類別型的資料轉成 One-Hot-Encoding 形式
     
-  * 將文字型資料合併成一欄並使用TF-IDF技術挑選文本中比較重要的文字 (R檔跑不了這麼大量的資料，所以我們使用python來做)
-  
+  * 將文字型資料合併成一欄並使用TF-IDF技術挑選文本中比較重要的文字取其前大約4000大的值 
+    (R檔跑不了這麼大量的資料，所以我們使用python來做)
     連結：https://colab.research.google.com/drive/1W6wSqikmaq6s2pE6yhDOoYl4I9jugM18?usp=sharing)
       
   * Unbalanced data preprocessing 
