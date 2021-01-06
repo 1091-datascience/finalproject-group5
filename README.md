@@ -12,21 +12,21 @@ A breif introduction about your project, i.e., what is your goal?
 This dataset contains 18K job descriptions out of which about 800 are fake. The data consists of both textual information and meta-information about the jobs. The dataset can be used to create classification models which can learn the job descriptions which are fraudulent.
 
 ### Demo 
-在finalproject-group5的資料夾下執行
+在 finalproject-group5 的資料夾下執行
 
-* 將Unblanced Data 轉成Balanced Data
+* 將 Unblanced Data 轉成 Balanced Data
 ```R
 Rscript ./code/Unbalanced_data2Balanced_data --input ./data/fake_job_postings_TFIDF.csv 
 --output ./data/fake_job_postings_TFIDF_balance.csv
 ```
 
-* 訓練GBM模型在Unbalanced data並評估模型好壞
+* 訓練GBM模型在 Unbalanced data 並評估模型好壞
 ```R
 Rscript ./code/Unb_training_model_and_evl_table.R --input ./data/fake_job_postings.csv 
 --output ./model_results/unb/cnf_gbm_unb.csv --training_rds ./model_results/unb/gbm_ub.rds
 ```
 
-* 訓練Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
+* 訓練 Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
 ```R
 Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv 
 
@@ -48,7 +48,7 @@ Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv
 以上arg_parser你可以直接使用內建的預設值
 ```
 
-P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下載
+P.S. 我們訓練好的模型 Weights 我們有另外放在雲端，請自行下載
 
 (https://drive.google.com/drive/folders/1HDY8g8NNHdUHut-sOkXCeM_MjAkRTAxR?usp=sharing)
 
@@ -65,7 +65,7 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
 ### data
 
 * Kaggle 公開資料 Link: https://www.kaggle.com/shivamb/real-or-fake-fake-jobposting-prediction
-* 原始資料來自希臘愛琴大學 資安實驗室的EMSCAD資料集
+* 原始資料來自希臘愛琴大學 資安實驗室的 EMSCAD 資料集
  ![Kaggle公開資料](/Images/EMSCAD資料集.png)
 
 * Input format
@@ -80,7 +80,7 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
   * Scale value 
     * 將類別型的資料轉成 One-Hot-Encoding 形式
     
-  * 將文字型資料合併成一欄並使用TF-IDF技術挑選文本中比較重要的文字，並取其前大約4000大的值，之後在將有這些文字的資料做 One-Hot-Encoding
+  * 將文字型資料合併成一欄並使用 TF-IDF 技術挑選文本中比較重要的文字，並取其前大約4000大的值，之後在將有這些文字的資料做 One-Hot-Encoding
   
     (R檔跑不了這麼大量的資料，所以我們使用python來做)
     
@@ -92,11 +92,11 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
 ### code
 
 * Which method do you use? 
-  * 我們針對這些資料分別使用下列模型:gbm/decision_tree/lasso/ridge/xgboost
+  * 我們針對這些資料分別使用下列模型 : gbm/decision_tree/lasso/ridge/xgboost
 * What is a null model for comparison? 
-  * null_model:全部資料都預測為真工作(因為在資料中真工作比例很高)
+  * null_model : 全部資料都預測為真工作(因為在資料中真工作比例很高)
 * How do your perform evaluation? 
-  * 利用k-fold交叉驗證
+  * 利用 10-fold 交叉驗證
 
 ### results
 
