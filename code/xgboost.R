@@ -1,9 +1,6 @@
 library(psych)  #for general functions
 library(ggplot2)  #for data visualization
-library(caret)#for training and cross validation (also calls other model libaries)
-library(RColorBrewer)       # Color selection for fancy tree plot
-library(party)                  # Alternative decision tree algorithm
-library(partykit)               # Convert rpart object to BinaryTree   
+library(caret)#for training and cross validation (also calls other model libaries)  
 library(ROCit)
 library(argparser)
 
@@ -26,7 +23,7 @@ p <- add_argument(p, "--testing_eval_table", help="training and valuation",defau
 p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/xgb/xgb_train" )
 p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/xgb/xgb_tv")
 
-# trailingOnly 如�?�是TRUE??�話，�?�只編輯command-line?��?��args??�值args <- 
+# trailingOnly å¦‚æ?œæ˜¯TRUE??„è©±ï¼Œæ?ƒåªç·¨è¼¯command-line?‡º?¾args??„å€¼args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
