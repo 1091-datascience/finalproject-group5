@@ -110,16 +110,16 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
 * Code/implementation which you include/reference (__You should indicate in your presentation if you use code for others. Otherwise, cheating will result in 0 score for final project.__)
 * Packages you use
 
- *  library(psych)  
- *  library(ggplot2) 
- *  library(caret)
- *  library(ROCit)
- *  library(argparser)
- *  library(gbm)
- *  library(glmnet)
- *  library(unbalanced)
- *  library(xgboost)
- *  library(rpart)
+  *  library(psych)  
+  *  library(ggplot2) 
+  *  library(caret)
+  *  library(ROCit)
+  *  library(argparser)
+  *  library(gbm)
+  *  library(glmnet)
+  *  library(unbalanced)
+  *  library(xgboost)
+  *  library(rpart)
 
 * Related publications
 
