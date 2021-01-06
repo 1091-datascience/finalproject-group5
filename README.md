@@ -91,17 +91,21 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
   
 ### code
 
-* Which method do you use? *Decision_Tree ridge lasso gbm xgboost
-* What is a null model for comparison? *Unbalanced model using in balanced data
-* How do your perform evaluation? ie. Cross-validation, or extra separated data
+* Which method do you use? 
+ * 我們針對這些資料分別使用下列模型:gbm/decision_tree/lasso/ridge/xgboost
+* What is a null model for comparison? 
+ * null_model:全部資料都預測為真工作(因為在資料中真工作比例很高)
+* How do your perform evaluation? 
+ * 利用k-fold交叉驗證
 
 ### results
 
 * Which metric do you use 
-  * precision, recall, R-square
+  * accuracy/sensitivity/specificity/precision/recall/F1-score/balanced_accuracy/AUC
 * Is your improvement significant?
+ * 先用訓練好的模型各自與原先的null_model以balanced_accuracy做比較，再將全部的模型做第二階段以同樣方式做篩選，選出在這資料集中最佳的模型
 * What is the challenge part of your project?
-
+ * 在這挑戰中，因資料集有文字型且假工作與真工作的比例極為不平均需針對這些資料作特別的前處理
 ## References
 * Code/implementation which you include/reference (__You should indicate in your presentation if you use code for others. Otherwise, cheating will result in 0 score for final project.__)
 * Packages you use
