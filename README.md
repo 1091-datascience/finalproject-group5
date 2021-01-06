@@ -87,7 +87,7 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
     連結：https://colab.research.google.com/drive/1W6wSqikmaq6s2pE6yhDOoYl4I9jugM18?usp=sharing)
       
   * Unbalanced data preprocessing 
-    1. 在 Label 數量極為不平均，真工作假工作比例大約為 10:1，所以我們利用 Synthetic Minority Oversampling Technique(SMOTE)方法合成假工作資料
+    1. 在 Label 數量極為不平均，真工作假工作比例大約為 10:1，所以我們利用 Synthetic Minority Oversampling Technique(SMOTE)方法減少真工作資料以及增加假工作資料，使其比例接近 1:1
   
 ### code
 
