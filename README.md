@@ -23,7 +23,7 @@ Rscript ./code/Unbalanced_data2Balanced_data --input ./data/fake_job_postings_TF
 * 訓練GBM模型在Unbalanced data並評估模型好壞
 ```R
 Rscript ./code/Unb_training_model_and_evl_table.R --input ./data/fake_job_postings.csv 
---output ./model_results/unb/cnf_gbm_unb.csv --model_weight ./model_results/unb/gbm_ub.rds
+--output ./model_results/unb/cnf_gbm_unb.csv --training_rds ./model_results/unb/gbm_ub.rds
 ```
 
 * 訓練Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
@@ -35,7 +35,7 @@ Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv
 註2:還有其他的arg_parser 分別代表
 
 --training_rds 存放訓練Training data後的模型參數位置
---training_and_val_rd 存放訓練Training data + Validation data後的模型參數位置
+--training_and_val_rds 存放訓練Training data + Validation data後的模型參數位置
 --val_eval_table 存放訓練Training data後的模型評估指標csv檔
 --testing_eval_table 存放訓練Training data + Validation data後的模型評估指標csv檔
 --val_ROC 存放訓練Training data後的模型ROC的png檔
