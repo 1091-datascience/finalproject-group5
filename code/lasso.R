@@ -24,15 +24,15 @@ p <- add_argument(p, "--val_eval_table", help="only training",default = "./model
 p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/lasso/cnf_lasso_tv.csv")
 p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/lasso/lasso_train" )
 p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/lasso/lasso_tv")
-
-# trailingOnly å¦‚æ?œæ˜¯TRUE??„è©±ï¼Œæ?ƒåªç·¨è¼¯command-line?‡º?¾args??„å€¼args <- 
+p <- add_argument(p, "--fold", help="training fold",default = 10)
+# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
 table(df2$fraudulent)
 df2 <- df2[,-1]
 df2 <- df2[sample(nrow(df2)),]
-folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(10),labels=FALSE)
+folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(args$fold),labels=FALSE)
 testIndexes <- list()
 validIndexes <- list()
 testData <- list()
@@ -40,8 +40,8 @@ validData <- list()
 trainData <- list()
 tvData <- list()
 
-for(i in 1:10){
-  if(i==10){
+for(i in 1:as.numeric(args$fold)){
+  if(i==as.numeric(args$fold)){
     testIndexes[[i]] <- which(folds==i,arr.ind=TRUE)
     validIndexes[[i]] <- which(folds==1,arr.ind=TRUE)
     testData[[i]] <- df2[testIndexes[[i]], ]
@@ -55,7 +55,7 @@ for(i in 1:10){
     trainData[[i]] <- df2[-rbind(testIndexes[[i]],validIndexes[[i]]),]
   }
 }
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   tvData[[i]] <- rbind.data.frame(trainData[[i]],validData[[i]])
 }
 
@@ -63,7 +63,7 @@ for(i in 1:10){
 
 library(glmnet)
 
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_lasso_train=glmnet(x = data.matrix(trainData[[i]][, -length(trainData[[i]])]), 
                          y = trainData[[i]]$fraudulent, 
                          alpha = 1,
@@ -118,7 +118,7 @@ roc.lasso_train <- list()
 roc.lasso_tv <- list()
 auc.lasso_train <- list()
 auc.lasso_tv <- list()
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_lasso_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_lasso_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
   cv_lasso_train <- readRDS(file=paste(args$training_cv_rds,i,".rds",sep=""))
@@ -191,12 +191,12 @@ classo_tv_final <- rbind(classo_tv_final,k)
 
 write.csv(classo_train_final,file=args$val_eval_table)
 write.csv(classo_tv_final,file=args$testing_eval_table)
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$val_ROC,i,".png",sep=""))
   plot(roc.lasso_train[[i]], YIndex = F, values = F)
   dev.off()
 }
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$testing_ROC,i,".png",sep=""))
   plot(roc.lasso_tv[[i]], YIndex = F, values = F)
   dev.off()
