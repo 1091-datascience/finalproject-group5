@@ -107,7 +107,9 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
 * What is the challenge part of your project?
   * 在這挑戰中，因資料集有文字型且假工作與真工作的比例極為不平均需針對這些資料作特別的前處理
 ## References
-* Code/implementation which you include/reference (__You should indicate in your presentation if you use code for others. Otherwise, cheating will result in 0 score for final project.__)
+* Code/implementation which you include/reference
+  * paper
+    * SMOTE: Synthetic Minority Over-sampling Technique(https://arxiv.org/pdf/1106.1813.pdf) 
 * Packages you use
 
   *  library(psych)  
