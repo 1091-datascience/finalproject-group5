@@ -19,9 +19,9 @@ if (!dir.exists(output_dir)){
 }
 
 p <- arg_parser("Unbalanced data training model use in balanced testing data")
-p <- add_argument(p, "--input_csv", help="unbalanced data csv file",default = "./data/fake_job_postings_TFIDF.csv")
+p <- add_argument(p, "--input", help="unbalanced data csv file",default = "./data/fake_job_postings_TFIDF.csv")
 p <- add_argument(p, "--model_weight", help="training model weight",default = "./model_results/unb/gbm_ub.rds")
-p <- add_argument(p, "--output_csv", help="evaluation table",default = "./model_results/unb/cnf_gbm_unb.csv")
+p <- add_argument(p, "--output", help="evaluation table",default = "./model_results/unb/cnf_gbm_unb.csv")
 #  trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 df1<-read.csv(args$input_csv,fileEncoding='utf-8')
