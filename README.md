@@ -14,19 +14,19 @@ This dataset contains 18K job descriptions out of which about 800 are fake. The 
 ### Demo 
 將Unblanced Data 轉成Balanced Data
 ```R
-Rscript ./code/Unbalanced_data2Balanced_data --input_csv ../data/fake_job_postings_TFIDF.csv 
---output_csv ../data/fake_job_postings_TFIDF_balance.csv
+Rscript ./code/Unbalanced_data2Balanced_data --input_csv ./data/fake_job_postings_TFIDF.csv 
+--output_csv ./data/fake_job_postings_TFIDF_balance.csv
 ```
 
 訓練GBM模型在Unbalanced data並評估模型好壞
 ```R
-Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ../data/fake_job_postings.csv 
---output_csv ../model_results/unb/cnf_gbm_unb.csv --model_weight ../model_results/unb/gbm_ub.rds
+Rscript ./code/Unb_training_model_and_evl_table.R --input_csv ./data/fake_job_postings.csv 
+--output_csv ./model_results/unb/cnf_gbm_unb.csv --model_weight ./model_results/unb/gbm_ub.rds
 ```
 
 訓練Decision_tree\GBM\xgboost\Lasso\Ridge 模型並評估模型好壞
 ```R
-Rscript ./code/****.R --input ../data/fake_job_postings_TFIDF_balance.csv 
+Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv 
 
 註1:****.R 可以替換成在code資料夾底下的模型名稱(e.g. decision_tree.R)
 
