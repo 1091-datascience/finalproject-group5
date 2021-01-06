@@ -40,10 +40,9 @@ Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv
 --testing_eval_table 存放訓練Training data + Validation data後的模型評估指標csv檔
 --val_ROC 存放訓練Training data後的模型ROC的png檔
 --testing_ROC 存放訓練Training data + Validation data後的模型ROC的png檔
---training_cv_rds (這是Ridge/Lasso才有)
---training_and_val_cv_rds (這是Ridge/Lasso才有)
---val_eval_table (這是Ridge/Lasso才有)
---testing_eval_table (這是Ridge/Lasso才有)
+--fold 需要將資料集切的份數
+--training_cv_rds 找出Training data後的模型最佳的lambda值(這是Ridge/Lasso才有)
+--training_and_val_cv_rds 找出Training data + Validation data後的模型最佳的lambda值(這是Ridge/Lasso才有)
 
 以上arg_parser你可以直接使用內建的預設值
 ```
