@@ -74,7 +74,7 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
 * Any preprocessing?
   * 將文字型資料合併成一欄在使用TF-IDF技術挑選文本中比較重要的文字 (因為R檔跑不了這麼大量的資料，所以我們使用python來做連結如下)
   
-  連結：https://colab.research.google.com/drive/1W6wSqikmaq6s2pE6yhDOoYl4I9jugM18?usp=sharing)
+    連結：https://colab.research.google.com/drive/1W6wSqikmaq6s2pE6yhDOoYl4I9jugM18?usp=sharing)
   
   * Handle missing data   *將Salary 資料刪除(因為太多missing value) 將title刪除，因為desciption欄位會描述
   * Scale value           *將類別型的資料轉成one-hot-encoding形式
