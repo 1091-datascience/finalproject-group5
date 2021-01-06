@@ -25,8 +25,6 @@ p <- add_argument(p, "--output", help="evaluation table",default = "./model_resu
 #  trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 df1<-read.csv(args$input_csv,fileEncoding='utf-8')
-df2 <- read.csv("./data/fake_job_postings_TFIDF_balance.csv")
-df2 <- df2[,-1]
 set.seed(20201219)
 index <-  sort(sample(nrow(df1), nrow(df1)*.75))
 train <- df1[index,]
