@@ -16,8 +16,8 @@ This dataset contains 18K job descriptions out of which about 800 are fake. The 
 
 * 將Unblanced Data 轉成Balanced Data
 ```R
-Rscript ./code/Unbalanced_data2Balanced_data --input_csv ./data/fake_job_postings_TFIDF.csv 
---output_csv ./data/fake_job_postings_TFIDF_balance.csv
+Rscript ./code/Unbalanced_data2Balanced_data --input ./data/fake_job_postings_TFIDF.csv 
+--output ./data/fake_job_postings_TFIDF_balance.csv
 ```
 
 * 訓練GBM模型在Unbalanced data並評估模型好壞
