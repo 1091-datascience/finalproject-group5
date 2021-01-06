@@ -48,7 +48,7 @@ Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv
 以上arg_parser你可以直接使用內建的預設值
 ```
 
-P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1WpWAUbflBEZDdUu03k2wPS2FTHHsYLf7?usp=sharing)
+P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下載(https://drive.google.com/drive/folders/1HDY8g8NNHdUHut-sOkXCeM_MjAkRTAxR?usp=sharing)
 
 * any on-line visualization
 
