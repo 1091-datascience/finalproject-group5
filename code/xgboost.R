@@ -22,15 +22,15 @@ p <- add_argument(p, "--val_eval_table", help="only training",default = "./model
 p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/xgb/cnf_xgb_tv.csv")
 p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/xgb/xgb_train" )
 p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/xgb/xgb_tv")
-
-# trailingOnly å¦‚æ?œæ˜¯TRUE??„è©±ï¼Œæ?ƒåªç·¨è¼¯command-line?‡º?¾args??„å€¼args <- 
+p <- add_argument(p, "--fold", help="training fold",default = 10)
+# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
 table(df2$fraudulent)
 df2 <- df2[,-1]
 df2 <- df2[sample(nrow(df2)),]
-folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(10),labels=FALSE)
+folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(args$fold),labels=FALSE)
 testIndexes <- list()
 validIndexes <- list()
 testData <- list()
@@ -38,8 +38,8 @@ validData <- list()
 trainData <- list()
 tvData <- list()
 
-for(i in 1:10){
-  if(i==10){
+for(i in 1:as.numeric(args$fold)){
+  if(i==as.numeric(args$fold)){
     testIndexes[[i]] <- which(folds==i,arr.ind=TRUE)
     validIndexes[[i]] <- which(folds==1,arr.ind=TRUE)
     testData[[i]] <- df2[testIndexes[[i]], ]
@@ -53,7 +53,7 @@ for(i in 1:10){
     trainData[[i]] <- df2[-rbind(testIndexes[[i]],validIndexes[[i]]),]
   }
 }
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   tvData[[i]] <- rbind.data.frame(trainData[[i]],validData[[i]])
 }
 
@@ -63,7 +63,7 @@ dtrain <- list()
 dval <- list()
 dtv <- list()
 dtest <- list()
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   dtrain[[i]] = xgb.DMatrix(data = as.matrix((trainData[[i]][, -length(trainData[[i]])])),
                             label =trainData[[i]]$fraudulent)
   dval[[i]] = xgb.DMatrix(data = as.matrix((validData[[i]][, -length(validData[[i]])])),
@@ -73,7 +73,7 @@ for(i in 1:10){
   dtest[[i]] = xgb.DMatrix(data = as.matrix((testData[[i]][, -length(testData[[i]])])),
                            label =testData[[i]]$fraudulent)
 }
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_xgb_train <- xgb.train(data=dtrain[[i]],max.depth=4,eta=.2,nthread=6,nround=50,objective="binary:logistic",
                              eval_metric="error",eval_metric="logloss",eval_metric="auc")
   num_xgb_tv <- xgb.train(data=dtv[[i]],max.depth=4,eta=.2,nthread=6,nround=50,objective="binary:logistic",
@@ -114,7 +114,7 @@ roc.xgb_train <- list()
 roc.xgb_tv <- list()
 auc.xgb_train <- list()
 auc.xgb_tv <- list()
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_xgb_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_xgb_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
   xgb_train_out[[i]] <-  predict(num_xgb_train, newdata=dval[[i]])
@@ -181,12 +181,12 @@ cxgb_tv_final <- rbind(cxgb_tv_final,k)
 
 write.csv(cxgb_train_final,file=args$val_eval_table)
 write.csv(cxgb_tv_final,file=args$testing_eval_table)
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$val_ROC,i,".png",sep=""))
   plot(roc.xgb_train[[i]], YIndex = F, values = F)
   dev.off()
 }
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$testing_ROC,i,".png",sep=""))
   plot(roc.xgb_tv[[i]], YIndex = F, values = F)
   dev.off()
