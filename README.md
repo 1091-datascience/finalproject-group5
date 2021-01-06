@@ -12,6 +12,8 @@ A breif introduction about your project, i.e., what is your goal?
 This dataset contains 18K job descriptions out of which about 800 are fake. The data consists of both textual information and meta-information about the jobs. The dataset can be used to create classification models which can learn the job descriptions which are fraudulent.
 
 ### Demo 
+在finalproject-group5的資料夾下執行
+
 將Unblanced Data 轉成Balanced Data
 ```R
 Rscript ./code/Unbalanced_data2Balanced_data --input_csv ./data/fake_job_postings_TFIDF.csv 
