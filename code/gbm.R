@@ -22,15 +22,15 @@ p <- add_argument(p, "--val_eval_table", help="only training",default = "./model
 p <- add_argument(p, "--testing_eval_table", help="training and valuation",default = "./model_results/gbm/cnf_gbm_tv.csv")
 p <- add_argument(p, "--val_ROC", help="only training",default = "./model_results/gbm/gbm_train" )
 p <- add_argument(p, "--testing_ROC", help="training and valuation",default = "./model_results/gbm/gbm_tv")
-
-# trailingOnly å¦‚æ?œæ˜¯TRUE??„è©±ï¼Œæ?ƒåªç·¨è¼¯command-line?‡º?¾args??„å€¼args <- 
+p <- add_argument(p, "--fold", help="training fold",default = 10)
+# trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
 df2 <- read.csv(args$input)
 table(df2$fraudulent)
 df2 <- df2[,-1]
 df2 <- df2[sample(nrow(df2)),]
-folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(10),labels=FALSE)
+folds <- cut(seq(1,nrow(df2)),breaks=as.numeric(args$fold),labels=FALSE)
 testIndexes <- list()
 validIndexes <- list()
 testData <- list()
@@ -38,8 +38,8 @@ validData <- list()
 trainData <- list()
 tvData <- list()
 
-for(i in 1:10){
-  if(i==10){
+for(i in 1:as.numeric(args$fold)){
+  if(i==as.numeric(args$fold)){
     testIndexes[[i]] <- which(folds==i,arr.ind=TRUE)
     validIndexes[[i]] <- which(folds==1,arr.ind=TRUE)
     testData[[i]] <- df2[testIndexes[[i]], ]
@@ -53,13 +53,13 @@ for(i in 1:10){
     trainData[[i]] <- df2[-rbind(testIndexes[[i]],validIndexes[[i]]),]
   }
 }
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   tvData[[i]] <- rbind.data.frame(trainData[[i]],validData[[i]])
 }
 
 #gbm
 library(gbm)
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_gbm_train <- gbm(fraudulent ~ .,
                        data=trainData[[i]], 
                        distribution="bernoulli",
@@ -106,7 +106,7 @@ roc.gbm_train <- list()
 roc.gbm_tv <- list()
 auc.gbm_train <- list()
 auc.gbm_tv <- list()
-for(i in 1:10){
+for(i in 1:as.numeric(args$fold)){
   num_gbm_train <- readRDS(file=paste(args$training_rds,i,".rds",sep=""))
   num_gbm_tv <- readRDS(file=paste(args$training_and_val_rds,i,".rds",sep=""))
   gbm_train_out[[i]] <-  predict(num_gbm_train, newdata=validData[[i]], type="response")
@@ -172,12 +172,12 @@ names(q) <- c("set","accuracy","sensitivity","specificity","precision","recall",
 cgbm_tv_final <- rbind(cgbm_tv_final,k)
 write.csv(cgbm_train_final,file=args$val_eval_table)
 write.csv(cgbm_tv_final,file=args$testing_eval_table)
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$val_ROC,i,".png",sep=""))
   plot(roc.gbm_train[[i]], YIndex = F, values = F)
   dev.off()
 }
-for (i in 1:10){
+for (i in 1:as.numeric(args$fold)){
   png(filename=paste(args$testing_ROC,i,".png",sep=""))
   plot(roc.gbm_tv[[i]], YIndex = F, values = F)
   dev.off()
