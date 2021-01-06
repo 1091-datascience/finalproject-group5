@@ -2,8 +2,8 @@ library(unbalanced)
 library(argparser)
 
 p <- arg_parser("Process unbalanced data csv to balanced data csv")#
-p <- add_argument(p, "--input_csv", help="unbalanced data csv file",default = "../data/fake_job_postings_TFIDF.csv" )
-p <- add_argument(p, "--output_csv", help="balanced data csv file",default = "../data/fake_job_postings_TFIDF_balance.csv")
+p <- add_argument(p, "--input_csv", help="unbalanced data csv file",default = "./data/fake_job_postings_TFIDF.csv" )
+p <- add_argument(p, "--output_csv", help="balanced data csv file",default = "./data/fake_job_postings_TFIDF_balance.csv")
 # trailingOnly 如果是TRUE的話，會只編輯command-line出現args的值args <- 
 args <- parse_args(p, commandArgs(trailingOnly = TRUE))
 
