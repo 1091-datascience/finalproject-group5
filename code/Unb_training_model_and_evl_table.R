@@ -1,9 +1,6 @@
 library(psych)  #for general functions
 library(ggplot2)  #for data visualization
 library(caret)#for training and cross validation (also calls other model libaries)
-library(RColorBrewer)       # Color selection for fancy tree plot
-library(party)                  # Alternative decision tree algorithm
-library(partykit)               # Convert rpart object to BinaryTree   
 library(ROCit)
 library(argparser)
 library(gbm)
