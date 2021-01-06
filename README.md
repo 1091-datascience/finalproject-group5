@@ -76,9 +76,13 @@ P.S. 我們訓練好的模型Weights我們有另外放在雲端，請自行下�
   
     連結：https://colab.research.google.com/drive/1W6wSqikmaq6s2pE6yhDOoYl4I9jugM18?usp=sharing)
   
-  * Handle missing data   *將Salary 資料刪除(因為太多missing value) 將title刪除，因為desciption欄位會描述
-  * Scale value           *將類別型的資料轉成one-hot-encoding形式
-  * Unbalanced data preprocessing *在label數量極為不平均大約為10:1 利用Synthetic Minority Oversampling Technique(SMOTE)方法合成少數類
+  * Handle missing data   
+    1. 因為太多 missing value，所以將 Salary 資料刪除
+    2. 將Title刪除，因為 Desciption 欄位會描述
+  * Scale value 
+    1. 將類別型的資料轉成 One-Hot-Encoding 形式
+  * Unbalanced data preprocessing 
+    1. 在 Label 數量極為不平均，真工作假工作比例大約為 10:1，所以我們利用 Synthetic Minority Oversampling Technique(SMOTE)方法合成假工作資料
   
 ### code
 
