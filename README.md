@@ -74,7 +74,7 @@ P.S. 我們訓練好的模型 Weights 我們有另外放在雲端，請自行下
 
   * Handle missing data   
     * 因為 Salary 太多 Missing Value，所以將此欄位的資料刪除
-    * 將 Title 刪除，因為 Desciption 欄位會描述
+    * 將 Title / Department 刪除，因為 Desciption 欄位會描述
     
   * Scale value 
     * 將類別型的資料轉成 One-Hot-Encoding 形式
