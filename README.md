@@ -32,7 +32,7 @@ Rscript ./code/****.R --input ./data/fake_job_postings_TFIDF_balance.csv
 
 註1:****.R 可以替換成在code資料夾底下的模型名稱(e.g. decision_tree.R)
 
-註2:還有其他的arg_parser 分別代表
+註2:還有其他的 arg_parser 分別代表
 
 --training_rds 存放訓練Training data後的模型參數位置
 --training_and_val_rds 存放訓練Training data + Validation data後的模型參數位置
