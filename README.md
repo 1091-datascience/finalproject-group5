@@ -12,7 +12,7 @@
 ### Demo 
 在 finalproject-group5 的資料夾下執行
 
-* 將 Unblanced Data 轉成 Balanced Data
+* 將 Unbalanced Data 轉成 Balanced Data
 ```R
 Rscript ./code/Unbalanced_data2Balanced_data --input ./data/fake_job_postings_TFIDF.csv 
 --output ./data/fake_job_postings_TFIDF_balance.csv
