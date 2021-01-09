@@ -7,9 +7,7 @@
 * 黃瑜萍, 108258021
 
 ### Goal
-A breif introduction about your project, i.e., what is your goal?
-
-This dataset contains 18K job descriptions out of which about 800 are fake. The data consists of both textual information and meta-information about the jobs. The dataset can be used to create classification models which can learn the job descriptions which are fraudulent.
+在求職階段時或是找實習時，不想因為假消息而讓自己在無意義的事浪費時間
 
 ### Demo 
 在 finalproject-group5 的資料夾下執行
