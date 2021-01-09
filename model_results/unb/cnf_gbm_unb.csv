@@ -1,2 +1,3 @@
 "","performance","accuracy","sensitivity","specificity","precision","recall","F1-score","balanced_accuaracy","auc"
 "1","ub_model_test_ub",0.97,0.99,0.52,0.98,0.99,0.98,0.76,0.95
+"2","ub_model_test_b",0.72,1,0.42,0.66,1,0.79,0.71,0.96
