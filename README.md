@@ -122,4 +122,7 @@ P.S. 我們訓練好的模型 Weights 我們有另外放在雲端，請自行下
 * Related publications
   * paper
     * SMOTE: Synthetic Minority Over-sampling Technique(https://arxiv.org/pdf/1106.1813.pdf) 
-
+    * LASSO: (http://www.math.yorku.ca/~hkj/Teaching/6621Winter2013/Coverage/lasso.pdf)
+    * XGBoost:(https://arxiv.org/pdf/1603.02754.pdf)
+    * GBM:(https://medium.com/@cwchang/gradient-boosting-%E7%B0%A1%E4%BB%8B-f3a578ae7205)
+    * Ridge:(https://www.math.arizona.edu/~hzhang/math574m/Read/RidgeRegressionBiasedEstimationForNonorthogonalProblems.pdf)
