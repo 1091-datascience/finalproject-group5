@@ -1,4 +1,4 @@
-# [Group5] [Real or Fake] Fake JobPosting Prediction
+# [Group5] [Real or Fake] 真假工作辨識
 
 ### Groups
 * 朱家宏, 106305036
