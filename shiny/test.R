@@ -1,0 +1,6 @@
+df <- read.csv("balanced_data.csv", header = T, stringsAsFactors = F, sep=",")
+fraudulent <- length(df$fraudulent[df$fraudulent==1])
+unfraudulent <-length(df$fraudulent[df$fraudulent==0])
+data <- data.frame(fraudulent,unfraudulent)
+data_t<-t(data)
+print(data_t)
