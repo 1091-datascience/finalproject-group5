@@ -102,7 +102,10 @@ P.S. 我們訓練好的模型 Weights 我們有另外放在雲端，請自行下
 * Is your improvement significant?
   * 先用訓練好的模型各自與原先的null_model以balanced_accuracy做比較，再將全部的模型做第二階段以同樣方式做篩選，選出在這資料集中最佳的模型
 * What is the challenge part of your project?
-  * 在這挑戰中，因資料集有文字型且假工作與真工作的比例極為不平均需針對這些資料作特別的前處理
+  * 在這挑戰中，因資料集有文字型且假工作與真工作的比例極為不平均需針對這些資料作特別的前處理  
+* shiny
+  * https://mchighjohnny.shinyapps.io/finalproject/?fbclid=IwAR390i-c3f_WaPxzwMLtqOCWVb3eQbJizcYOqy0se6YvCP7UiuC5w8otUDI
+
 ## References
 * Code/implementation which you include/reference
 
