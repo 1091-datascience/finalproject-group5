@@ -105,6 +105,8 @@ P.S. 我們訓練好的模型 Weights 我們有另外放在雲端，請自行下
   * 在這挑戰中，因資料集有文字型且假工作與真工作的比例極為不平均需針對這些資料作特別的前處理  
 * shiny
   * https://mchighjohnny.shinyapps.io/finalproject/?fbclid=IwAR390i-c3f_WaPxzwMLtqOCWVb3eQbJizcYOqy0se6YvCP7UiuC5w8otUDI
+  * code 放在shiny的資料夾裡面
+  * 呈現 Raw Data Infomation, 偽工作的Balanced/Unbalanced Data, 資料學習後的Performance
 
 ## References
 * Code/implementation which you include/reference
